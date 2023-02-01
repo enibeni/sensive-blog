@@ -58,7 +58,9 @@ def index(request):
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
-    comments = Comment.objects.filter(post=post).select_related("author")
+    # comments = Comment.objects.filter(post=post).select_related("author")
+    comments = post.comments.select_related("author")
+
     serialized_comments = [serialize_comment(comment) for comment in comments]
 
     related_tags = post.tags.annotate(posts_with_tag=Count('posts'))
